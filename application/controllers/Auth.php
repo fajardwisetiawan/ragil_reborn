@@ -18,7 +18,7 @@ class Auth extends CI_Controller
         $pass       = $this->input->post('password', true);
 
         $getAdmin = $this->db
-                ->get_where("lpju.m_user", [
+                ->get_where("m_admin", [
                     "username"  => $username
                 ])
                 ->row()->count;
