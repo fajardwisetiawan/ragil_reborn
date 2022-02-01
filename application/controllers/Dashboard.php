@@ -1,15 +1,27 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Auth extends CI_Controller
+class Dashboard extends CI_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+            $this->load->view('auth/login');
+        }
+    }
+
     public function index()
     {
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
-            $this->load->view('auth/index');
-        } else {
-            redirect("dashboard");
-        }
+        $data = [
+            "app_name"  => "TOKO RAGIL 2 REBORN",
+            "title"     => strtoupper(str_replace("_", " ", $this->router->fetch_class())),
+        ];
+
+        $this->load->view("component/header", $data);
+        $this->load->view("component/sidebar", $data);
+        $this->load->view("dashboard/index", $data);
+        $this->load->view("component/footer", $data);
     }
 
     public function login_proses()
@@ -36,7 +48,7 @@ class Auth extends CI_Controller
             $this->session->set_userdata($userData);
             redirect('dashboard');
         } else {
-            $this->session->set_flashdata('gagal', 'Username atau password salah');
+            $this->session->set_flashdata('failed', 'Username atau password salah');
             redirect("auth");
         }
     }
