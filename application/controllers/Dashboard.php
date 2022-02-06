@@ -9,60 +9,30 @@ class Dashboard extends CI_Controller
         if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
             $this->load->view('auth/login');
         }
+
+        $this->load->model("dashboard_model");
     }
 
     public function index()
     {
         $data = [
-            "app_name"  => "TOKO RAGIL 2 REBORN",
-            "title"     => strtoupper(str_replace("_", " ", $this->router->fetch_class())),
+            "app_name"          => "TOKO RAGIL 2 REBORN",
+            "title"             => strtoupper(str_replace("_", " ", $this->router->fetch_class())),
+            'belum_bayar_today' => $this->dashboard_model->getSumBelumBayarToday(),
+            'dikemas_today'     => $this->dashboard_model->getSumDikemasToday(),
+            'dikirim_today'     => $this->dashboard_model->getSumDikirimToday(),
+            'batal_today'       => $this->dashboard_model->getSumBatalToday(),
+
+            'belum_bayar_all'   => $this->dashboard_model->getSumBelumBayarAll(),
+            'dikemas_all'       => $this->dashboard_model->getSumDikemasAll(),
+            'dikirim_all'       => $this->dashboard_model->getSumDikirimAll(),
+            'batal_all'         => $this->dashboard_model->getSumBatalAll(),
         ];
 
+        // die(json_encode($data));
         $this->load->view("component/header", $data);
         $this->load->view("component/sidebar", $data);
         $this->load->view("dashboard/index", $data);
         $this->load->view("component/footer", $data);
-    }
-
-    public function login_proses()
-    {
-        $username   = $this->input->post('username', true);
-        $password   = md5($this->input->post('password', true));
-
-        $getAdmin = $this->db
-                ->get_where("m_admin", [
-                    "username"  => $username,
-                    "password"  => $password,
-                ])
-                ->row();
-        
-        if ($getAdmin) {
-            $userData = [
-                "id"        => $getAdmin->id,
-                "username"  => $getAdmin->username,
-                "nama"      => $getAdmin->nama,
-                "email"     => $getAdmin->email,
-                "telepon"   => $getAdmin->telepon,
-                "status"    => "LOGIN",
-            ];
-            $this->session->set_userdata($userData);
-            redirect('dashboard');
-        } else {
-            $this->session->set_flashdata('failed', 'Username atau password salah');
-            redirect("auth");
-        }
-    }
-
-    public function logout_proses()
-    {
-        unset($_SESSION['id']);
-        unset($_SESSION['username']);
-        unset($_SESSION['nama']);
-        unset($_SESSION['email']);
-        unset($_SESSION['telepon']);
-        unset($_SESSION['status']);
-        $this->session->sess_destroy();
-
-        redirect("auth");
     }
 }

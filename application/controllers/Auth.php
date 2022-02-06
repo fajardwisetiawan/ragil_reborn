@@ -29,8 +29,6 @@ class Auth extends CI_Controller
                 "id"        => $getAdmin->id,
                 "username"  => $getAdmin->username,
                 "nama"      => $getAdmin->nama,
-                "email"     => $getAdmin->email,
-                "telepon"   => $getAdmin->telepon,
                 "status"    => "LOGIN",
             ];
             $this->session->set_userdata($userData);
@@ -46,8 +44,6 @@ class Auth extends CI_Controller
         unset($_SESSION['id']);
         unset($_SESSION['username']);
         unset($_SESSION['nama']);
-        unset($_SESSION['email']);
-        unset($_SESSION['telepon']);
         unset($_SESSION['status']);
         $this->session->sess_destroy();
 

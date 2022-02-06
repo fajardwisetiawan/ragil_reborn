@@ -70,7 +70,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="recipient-name" class="control-label">Kategori <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" name="kategori" id="kategori" placeholder="Kategori" required>
+                                                <select class="form-control select2bs4" name="kategori" id="kategori" required>
+                                                    <option value="" selected disabled>-- PILIH KATEGORI --</option>
+                                                    <?php foreach ($kategori as $k) { ?>
+                                                        <option value="<?= $k->id ?>"><?= $k->kategori ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -106,18 +111,19 @@
                         </thead>
                         <tbody>
                             <?php $no = 1;
-                            foreach ($produk as $u) { ?>
+                            foreach ($produk as $p) { ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
                                     <td>
-                                        <button type="button" title="Edit" onclick="modal_edit('<?= $u->id ?>')" data-toggle="modal" data-target="#modal_ubah" class="btn btn-sm btn-info waves-effect waves-light" type="button"><span class="btn-label text-white"><i class="fas fa-edit"></i></span></button>
-                                        <button type="button" title="Hapus" onclick="hapus('<?= $u->id ?>')" class="btn btn-sm btn-danger waves-effect waves-light" type="button"><span class="btn-label text-white"><i class="fas fa-trash"></i></span></button>
+                                        <a href="<?= base_url('master/produk_ready/detail/') . $p->id ?>" title="Ukuran dan Stok" class="btn btn-sm btn-success waves-effect waves-light"><i class="fas fa-info-circle"></i></a>
+                                        <button type="button" title="Edit" onclick="modal_edit('<?= $p->id ?>')" data-toggle="modal" data-target="#modal_ubah" class="btn btn-sm btn-info waves-effect waves-light" type="button"><span class="btn-label text-white"><i class="fas fa-edit"></i></span></button>
+                                        <button type="button" title="Hapus" onclick="hapus('<?= $p->id ?>')" class="btn btn-sm btn-danger waves-effect waves-light" type="button"><span class="btn-label text-white"><i class="fas fa-trash"></i></span></button>
                                     </td>
-                                    <td><?= $u->nama ?></td>
-                                    <td><?= $u->deskripsi ?></td>
-                                    <td><?= $u->harga ?></td>
-                                    <td><?= $u->kategori ?></td>
-                                    <td><?= $u->gambar != null || $u->gambar != '' ? "<img src='" . base_url("images/" . $u->gambar) . "' width='100' height='100'>" : "<img src='" . base_url("images/not_found/not_found.png") . "' width='100' height='90'>" ?></td>
+                                    <td><?= $p->nama ?></td>
+                                    <td><?= $p->deskripsi ?></td>
+                                    <td>Rp. <?= number_format($p->harga,2) ?></td>
+                                    <td><?= $p->kategori ?></td>
+                                    <td><?= $p->gambar != null || $p->gambar != '' ? "<img src='" . base_url("images/" . $p->gambar) . "' width='100' height='100'>" : "<img src='" . base_url("images/not_found/not_found.png") . "' width='100' height='90'>" ?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -138,12 +144,12 @@
                 </button>
             </div>
             <form method="POST" action="<?= base_url("master/produk_ready/update") ?>" id="form_add" enctype='multipart/form-data'>
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label for="recipient-name" class="control-label">Nama <span class="text-danger">*</span></label>
-                            <input type="hidden" class="form-control" name="id_edit" id="id_edit" placeholder="ID" required>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="recipient-name" class="control-label">Nama <span class="text-danger">*</span></label>
+                                <input type="hidden" class="form-control" name="id_edit" id="id_edit" placeholder="ID" required>
                                 <input type="text" class="form-control" name="nama_edit" id="nama_edit" placeholder="Nama" required>
                             </div>
                         </div>
@@ -164,19 +170,25 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="recipient-name" class="control-label">Kategori <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" name="kategori_edit" id="kategori_edit" placeholder="Kategori" required>
+                                <select class="form-control select2bs4" name="kategori_edit" id="kategori_edit" required>
+                                    <option value="" selected disabled>-- PILIH KATEGORI --</option>
+                                    <?php foreach ($kategori_edit as $k) { ?>
+                                        <option value="<?= $k->id ?>"><?= $k->kategori ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="recipient-name" class="control-label">Gambar <span class="text-danger">*</span></label>
-                                <input type="file" class="form-control" name="gambar_edit" id="gambar_edit" placeholder="Gambar" required>
+                                <label for="recipient-name" class="control-label">Gambar <span class="text-danger">**</span></label>
+                                <input type="file" class="form-control" name="gambar_edit" id="gambar_edit" placeholder="Gambar">
                                 <input type="hidden" class="form-control" name="gambar_lama" id="gambar_lama" placeholder="Gambar" required>
                             </div>
                         </div>
                     </div>
+                    <span class="text-danger">**) Isi jika ingin mengubah, kosongkan jika tidak ingin mengubah</span>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -200,12 +212,12 @@
             contentType: "application/json; charset=utf-8",
             success: function(result) {
                 $('#id_edit').val(result.id);
-                $("#username_edit").val(result.username)
                 $("#nama_edit").val(result.nama)
-                $("#alamat_lengkap_edit").val(result.alamat_lengkap)
-                $("#kode_pos_edit").val(result.kode_pos)
-                $('#email_edit').val(result.email);
-                $('#telepon_edit').val(result.telepon);
+                $("#deskripsi_edit").val(result.deskripsi)
+                $("#harga_edit").val(result.harga)
+                $("#kategori_edit").val(result.id_kategori)
+                $("#kategori_edit").trigger('change.select2')
+                $('#gambar_lama').val(result.gambar);
 
             }
         });
@@ -250,294 +262,4 @@
             }
         });
     }
-
-    function check_level() {
-        var level = $("#level").val()
-        if (level == 'DOKTER' || level == 'PERAWAT' || level == 'BIDAN') {
-            $("#div_poli").show()
-            $("#poli").prop('required', true);
-        } else {
-            $("#div_poli").hide()
-            $("#poli").val("").change();
-            $("#poli").prop('required', false);
-        }
-    }
-
-    function check_level_edit() {
-        var level = $("#level_edit").val()
-        if (level == 'DOKTER' || level == 'PERAWAT' || level == 'BIDAN') {
-            $("#div_poli_edit").show()
-            $("#poli_edit").prop('required', true);
-        } else {
-            $("#div_poli_edit").hide()
-            $("#poli_edit").val("").change();
-            $("#poli_edit").prop('required', false);
-        }
-    }
-</script>
-<script>   
-    window.addEventListener('load', function() {
-
-        // $(".admin_select2").select2({
-        //     dropdownParent: $("#modal_tambah"),
-        //     closeOnSelect: true,
-        //     theme: 'bootstrap4',
-        //     ajax: {
-        //         url: '<?= base_url('master/admin/searchAdmin') ?>',
-        //         type: "post",
-        //         dataType: 'json',
-        //         delay: 250,
-        //         data: function(params) {
-        //             return {
-        //                 searchTerm: params.term
-        //             };
-        //         },
-        //         processResults: function(response) {
-        //             console.log(response)
-        //             return {
-        //                 results: response
-        //             };
-        //         },
-        //         cache: true,
-        //     },
-        // })
-
-        // $(".admin_select2_edit").select2({
-        //     dropdownParent: $("#modal_ubah"),
-        //     closeOnSelect: true,
-        //     theme: 'bootstrap4',
-        //     ajax: {
-        //         url: '<?= base_url('master/admin/searchAdmin') ?>',
-        //         type: "post",
-        //         dataType: 'json',
-        //         delay: 250,
-        //         data: function(params) {
-        //             return {
-        //                 searchTerm: params.term
-        //             };
-        //         },
-        //         processResults: function(response) {
-        //             console.log(response)
-        //             return {
-        //                 results: response
-        //             };
-        //         },
-        //         cache: true,
-        //     },
-        // })
-
-        $('#level').on('change', function() {
-            $(".poli").select2({
-                ajax: {
-                    url: '<?= base_url('master/admin/searchPoli/') ?>' + this.value,
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            searchTerm: params.term
-                        };
-                    },
-                    processResults: function(response) {
-
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true,
-                },
-                'theme': 'bootstrap4'
-            });
-        });
-
-        $('#level_edit').on('change', function() {
-            $(".poli_edit").select2({
-                ajax: {
-                    url: '<?= base_url('master/admin/searchPoli/') ?>' + this.value,
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            searchTerm: params.term
-                        };
-                    },
-                    processResults: function(response) {
-
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true,
-                },
-                'theme': 'bootstrap4'
-            });
-        });
-
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $("#provinsi").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKabupatenByIdProvinsi"); ?>",
-                data: {
-                    id_prov: $("#provinsi").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kabupaten").html(response.list_kabupaten).show();
-                    $("#kabupaten").change(function() {
-                        var kabupaten = $(this).find(":selected").text();
-                    });
-                    $("#kecamatan").html('<option value="">--- Pilih Kabupaten Terlebih Dahulu</option> ---').show();
-                    $("#kelurahan").html('<option value="">--- Pilih Kecamatan Terlebih Dahulu</option> ---').show();
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-
-        $("#kabupaten").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKecamatanByIdKabupaten"); ?>",
-                data: {
-                    id_kab: $("#kabupaten").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kecamatan").html(response.list_kecamatan).show();
-                    $("#kecamatan").change(function() {
-                        var kecamatan = $(this).find(":selected").text();
-                    });
-                    $("#kelurahan").html('<option value="">--- Pilih Kecamatan Terlebih Dahulu</option> ---').show();
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-
-        $("#kecamatan").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKelurahanByIdKecamatan"); ?>",
-                data: {
-                    kecamatan_id: $("#kecamatan").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kelurahan").html(response.list_kelurahan).show();
-                    $("#kelurahan").change(function() {
-                        var kelurahan = $(this).find(":selected").text();
-                    });
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-
-        $("#provinsi_edit").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKabupatenByIdProvinsi"); ?>",
-                data: {
-                    id_prov: $("#provinsi_edit").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kabupaten_edit").html(response.list_kabupaten).show();
-                    $("#kabupaten_edit").change(function() {
-                        var kabupaten = $(this).find(":selected").text();
-                    });
-                    $("#kecamatan_edit").html('<option value="">--- Pilih Kabupaten Terlebih Dahulu</option> ---').show();
-                    $("#kelurahan_edit").html('<option value="">--- Pilih Kecamatan Terlebih Dahulu</option> ---').show();
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-
-        $("#kabupaten_edit").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKecamatanByIdKabupaten"); ?>",
-                data: {
-                    id_kab: $("#kabupaten_edit").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kecamatan_edit").html(response.list_kecamatan).show();
-                    $("#kecamatan_edit").change(function() {
-                        var kecamatan = $(this).find(":selected").text();
-                    });
-                    $("#kelurahan_edit").html('<option value="">--- Pilih Kecamatan Terlebih Dahulu</option> ---').show();
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-
-        $("#kecamatan_edit").change(function() {
-            var kec = $(this).find(":selected").text();
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url("Welcome/getKelurahanByIdKecamatan"); ?>",
-                data: {
-                    kecamatan_id: $("#kecamatan_edit").val()
-                },
-                dataType: "json",
-                beforeSend: function(e) {
-                    if (e && e.overrideMimeType) {
-                        e.overrideMimeType("application/json;charset=UTF-8");
-                    }
-                },
-                success: function(response) {
-                    $("#kelurahan_edit").html(response.list_kelurahan).show();
-                    $("#kelurahan_edit").change(function() {
-                        var kelurahan = $(this).find(":selected").text();
-                    });
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError); // Munculkan alert error
-                }
-            });
-        });
-    });
 </script>
