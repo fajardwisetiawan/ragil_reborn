@@ -27,6 +27,8 @@ class Dashboard extends CI_Controller
             'dikemas_all'       => $this->dashboard_model->getSumDikemasAll(),
             'dikirim_all'       => $this->dashboard_model->getSumDikirimAll(),
             'batal_all'         => $this->dashboard_model->getSumBatalAll(),
+
+            'bulan_ini'         => $this->dashboard_model->getThisMonth(),
         ];
 
         // die(json_encode($data));

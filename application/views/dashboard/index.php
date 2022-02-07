@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h3 class="m-0 text-dark"><b>Hari Ini</h3>
+                    <p><b>Hari Ini</p>
                 </div>
             </div>
             <div class="row">
@@ -62,9 +62,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-2 mt-5">
+            <div class="row mt-2">
                 <div class="col-sm-12">
-                    <h3 class="m-0 text-dark"><b>Semua</h3>
+                    <p><b>Semua</p>
                 </div>
             </div>
             <div class="row">
@@ -117,6 +117,49 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-lg-12 col-12">
+                    <p>Grafik Penjualan Bulan Ini</p>
+                    <canvas id="myChart" height="50px"></canvas>
+                </div>
+            </div>
         </div>
     </section>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+            <?php
+                if (count($bulan_ini)>0) {
+                    foreach ($bulan_ini as $row) {
+                        if ($row->nama_produk_ready) {
+                            echo "'" . $row->nama_produk_ready ."',";
+                        } else {
+                            echo "'" . $row->nama_produk_preorder ."',";
+                        }
+                        
+                    }
+                }
+            ?>
+            ],
+            datasets: [{
+                label: 'Jumlah Penjualan',
+                backgroundColor: '#ADD8E6',
+                borderColor: '##93C3D2',
+                data: [
+                <?php
+                    if (count($bulan_ini)>0) {
+                    foreach ($bulan_ini as $row) {
+                        echo $row->total . ", ";
+                    }
+                    }
+                ?>
+                ]
+            }]
+        },
+    });
+</script>
