@@ -9,7 +9,7 @@ class Penjualan extends CI_Controller
     {
         parent::__construct();
         if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
-            $this->load->view('auth/login');
+            redirect('auth');
         }
 
         $this->load->helper(array('form', 'url', 'file'));

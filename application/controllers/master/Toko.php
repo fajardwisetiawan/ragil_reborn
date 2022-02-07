@@ -7,7 +7,7 @@ class Toko extends CI_Controller
     {
         parent::__construct();
         if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
-            $this->load->view('auth/login');
+            redirect('auth');
         }
 
         $this->load->model("toko_model");
@@ -27,146 +27,50 @@ class Toko extends CI_Controller
         $this->load->view("component/footer", $data);
     }
 
-    public function add()
+    public function save()
     {
-        $uname          = strtolower($this->input->post("username"));
-        $username       = str_replace(" ","_", $uname);
-        $password       = $this->input->post("password");
-        $nama           = strtoupper($this->input->post("nama"));
         $alamat_lengkap = strtoupper($this->input->post("alamat_lengkap"));
-        $kode_pos       = $this->input->post("kode_pos");
+        $nomor_wa       = $this->input->post("nomor_wa");
         $telepon        = $this->input->post("telepon");
         $email          = $this->input->post("email");
 
         $cek = $this->db
-            ->where('deleted_at IS NULL', null, false)
-            ->get_where("m_user", ["username" => $username])
+            ->get("m_toko")
             ->row();
         if (!$cek) {
             $dataInsert = [
-                "username"          => $username,
-                "password"          => $password,
-                "nama"              => $nama,
                 "alamat_lengkap"    => $alamat_lengkap,
-                "kode_pos"          => $kode_pos,
+                "nomor_wa"          => $nomor_wa,
                 "telepon"           => $telepon,
                 "email"             => $email,
                 "created_at"        => date("Y-m-d H:i:s"),
                 "created_by"        => $this->session->userdata('id'),
             ];
 
-            $insert = $this->db->insert('m_user', $dataInsert);
+            $insert = $this->db->insert('m_toko', $dataInsert);
 
             if ($insert) {
-                $this->session->set_flashdata("sukses", "Berhasil menambahkan data user!");
+                $this->session->set_flashdata("sukses", "Berhasil menambahkan data toko!");
             } else {
-                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat menambahkan user!");
+                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat menambahkan toko!");
             }
         } else {
-            $this->session->set_flashdata("gagal", "Maaf, user sudah terdaftar!");
-        }
-        redirect($_SERVER['HTTP_REFERER']);
-    }
-
-    public function getById($id = null)
-    {
-        $data = $this->db
-            ->where('deleted_at IS NULL', null, false)
-            ->get_where("m_user", ["id" => $id])
-            ->row();
-        echo json_encode($data);
-    }
-
-    public function update()
-    {
-        $id             = $this->input->post("id_edit");
-        $username       = $this->input->post("username_edit");
-        $nama           = $this->input->post("nama_edit");
-        $alamat_lengkap = strtoupper($this->input->post("alamat_lengkap_edit"));
-        $kode_pos       = $this->input->post("kode_pos_edit");
-        $telepon        = $this->input->post("telepon_edit");
-        $email          = $this->input->post("email_edit");
-
-
-        $cekById = $this->db
-                ->where('deleted_at IS NULL', null, false)
-                ->get_where("m_user", ["id" => $id])
-                ->row();
-
-        if ($cekById->username == $username) {
             $dataUpdate = [
-                "nama"              => $nama,
                 "alamat_lengkap"    => $alamat_lengkap,
-                "kode_pos"          => $kode_pos,
+                "nomor_wa"          => $nomor_wa,
                 "telepon"           => $telepon,
                 "email"             => $email,
                 "updated_at"        => date("Y-m-d H:i:s"),
                 "updated_by"        => $this->session->userdata('id'),
             ];
 
-            $update = $this->db->update("m_user", $dataUpdate, ["id" => $id]);
+            $update = $this->db->update("m_toko", $dataUpdate);
             if ($update) {
-                $this->session->set_flashdata("sukses", "Berhasil memperbaharui data user!");
+                $this->session->set_flashdata("sukses", "Berhasil memperbaharui data toko!");
             } else {
-                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data user");
-            }
-        } else {
-            $cekByUsername = $this->db
-                ->where('deleted_at IS NULL', null, false)
-                ->get_where("m_user", ["username" => $username])
-                ->row();
-            if (!$cekByUsername) {
-                $dataUpdate = [
-                    "nama"              => $nama,
-                    "alamat_lengkap"    => $alamat_lengkap,
-                    "kode_pos"          => $kode_pos,
-                    "telepon"           => $telepon,
-                    "email"             => $email,
-                    "updated_at"        => date("Y-m-d H:i:s"),
-                    "updated_by"        => $this->session->userdata('id'),
-                ];
-    
-                $update = $this->db->update("m_user", $dataUpdate, ["id" => $id]);
-                if ($update) {
-                    $this->session->set_flashdata("sukses", "Berhasil memperbaharui data user!");
-                } else {
-                    $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data user");
-                }
-            } else {
-                $this->session->set_flashdata("gagal", "Maaf, user sudah terdaftar!");
+                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data toko");
             }
         }
         redirect($_SERVER['HTTP_REFERER']);
-    }
-
-    public function delete()
-    {
-        $id     = $this->input->post("id", TRUE);
-        $cek    = $this->db
-                ->get_where("m_user", ["id" => $id])
-                ->row();
-        if ($cek) {
-            $dataDelete = [
-                "deleted_at"    => date("Y-m-d H:i:s"),
-                "deleted_by"    => $this->session->userdata('id'),
-            ];
-            $delete = $this->db->update("m_user", $dataDelete, ["id" => $id]);
-            if ($delete) {
-                echo json_encode([
-                    'response_code'     => 200,
-                    'response_message'  => 'User berhasil dihapus',
-                ]);
-            } else {
-                echo json_encode([
-                    'response_code'     => 400,
-                    'response_message'  => 'User gagal dihapus',
-                ]);
-            }
-        } else {
-            echo json_encode([
-                'response_code'     => 400,
-                'response_message'  => 'User tidak ditemukan',
-            ]);
-        }
     }
 }

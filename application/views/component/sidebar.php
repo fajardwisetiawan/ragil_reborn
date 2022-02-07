@@ -39,6 +39,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="<?= base_url('master/toko') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Toko
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= base_url('master/produk_ready') ?>" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
