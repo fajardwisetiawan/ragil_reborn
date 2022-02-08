@@ -31,7 +31,7 @@ class User extends CI_Controller
     {
         $uname          = strtolower($this->input->post("username"));
         $username       = str_replace(" ","_", $uname);
-        $password       = $this->input->post("password");
+        $password       = md5($this->input->post("password"));
         $nama           = strtoupper($this->input->post("nama"));
         $alamat_lengkap = strtoupper($this->input->post("alamat_lengkap"));
         $kode_pos       = $this->input->post("kode_pos");
