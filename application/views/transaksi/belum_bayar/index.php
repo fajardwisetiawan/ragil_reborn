@@ -33,11 +33,10 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body table-responsive">
-                    <table id="table_data" class="table nowrap table-bordered table-striped">
+                    <table id="table_data" class="table nowrap table-bordered table-striped text-center">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 3%">No.</th>
-                                <th style="width: 8%" class="text-center">Aksi</th>
                                 <th>Produk</th>
                                 <th>Harga</th>
                                 <th>Ukuran</th>
@@ -53,13 +52,12 @@
                             ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
-                                    <td class="text-center">
-                                        <button type="button" title="Verifikasi Pembayaran" onclick="verifikasi_pembayaran('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-success waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-check"></i></span></button>
-                                        <button type="button" title="Batal Pembayaran" onclick="batal_pembayaran('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-danger waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-times"></i></span></button>
-                                    </td>
+                                    <!-- <td class="text-center">
+                                        <button type="button" title="Verifikasi Pembayaran" onclick="verifikasi_pembayaran('<?= $t->id ?>', '<?= $t->nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-success waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-check"></i></span></button>
+                                    </td> -->
                                     <td><?= $t->nama_produk ?></td>
                                     <td>Rp. <?= number_format($t->harga,2) ?></td>
-                                    <td><?= $t->ukuran ?></td>
+                                    <td><?= $t->ukuran ? $t->ukuran : "---" ?></td>
                                     <td><?= $t->jumlah ?></td>
                                     <td><?= $t->catatan ?></td>
                                     <td><?= $t->created_at ?></td>
@@ -92,46 +90,6 @@
                 $.ajax({
                     type: "POST",
                     url: "<?= base_url('transaksi/belum_bayar/verifikasi_pembayaran') ?>",
-                    data: {
-                        "id": id
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        if (data.response_code == 200) {
-                            Swal.fire(
-                                'Berhasil',
-                                data.response_message,
-                                'success'
-                            ).then((result) => {
-                                location.reload()
-                            })
-                        } else {
-                            Swal.close();
-                            Swal.fire("Oops", data.response_message, "error");
-                        }
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        Swal.fire("Oops", xhr.responseText, "error");
-                    }
-                })
-            }
-        });
-    }
-    
-    function batal_pembayaran(id, nama_produk, nama_user) {
-        swal.fire({
-            title: 'Batal pembayaran ' + nama_produk + ' atas nama ' + nama_user,
-            text: "Pesanan yang sudah dibatalkan akan masuk ke list barang dibatalkan",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonText: 'Batal',
-            confirmButtonText: 'Verifkasi'
-        }).then((result) => {
-            if (result.value) {
-                $.ajax({
-                    type: "POST",
-                    url: "<?= base_url('transaksi/belum_bayar/batal_pembayaran') ?>",
                     data: {
                         "id": id
                     },

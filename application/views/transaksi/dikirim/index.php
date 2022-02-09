@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body table-responsive">
-                    <table id="table_data" class="table nowrap table-bordered table-striped">
+                    <table id="table_data" class="table nowrap table-bordered table-striped text-center">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 3%">No.</th>
@@ -54,7 +54,7 @@
                                     <td><?= $no++ ?>.</td>
                                     <td><?= $t->nama_produk ?></td>
                                     <td>Rp. <?= number_format($t->harga,2) ?></td>
-                                    <td><?= $t->ukuran ?></td>
+                                    <td><?= $t->ukuran ? $t->ukuran : "---" ?></td>
                                     <td><?= $t->jumlah ?></td>
                                     <td><?= $t->catatan ?></td>
                                     <td><?= $t->created_at ?></td>

@@ -33,7 +33,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body table-responsive">
-                    <table id="table_data" class="table nowrap table-bordered table-striped">
+                    <table id="table_data" class="table nowrap table-bordered table-striped text-center">
                         <thead>
                             <tr>
                                 <th class="text-center" style="width: 3%">No.</th>
@@ -54,11 +54,11 @@
                                 <tr>
                                     <td><?= $no++ ?>.</td>
                                     <td class="text-center">
-                                        <button type="button" title="Verifikasi Pembayaran" onclick="verifikasi_pengiriman('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-success waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-check"></i></span></button>
+                                        <button type="button" title="Verifikasi Pengiriman" onclick="verifikasi_pengiriman('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-success waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-check"></i></span></button>
                                     </td>
                                     <td><?= $t->nama_produk ?></td>
                                     <td>Rp. <?= number_format($t->harga,2) ?></td>
-                                    <td><?= $t->ukuran ?></td>
+                                    <td><?= $t->ukuran ? $t->ukuran : "---" ?></td>
                                     <td><?= $t->jumlah ?></td>
                                     <td><?= $t->catatan ?></td>
                                     <td><?= $t->created_at ?></td>
@@ -79,7 +79,7 @@
 
     function verifikasi_pengiriman(id, nama_produk, nama_user) {
         swal.fire({
-            title: 'Verifikasi pembayaran ' + nama_produk + ' atas nama ' + nama_user,
+            title: 'Verifikasi pengiriman ' + nama_produk + ' atas nama ' + nama_user,
             text: "Pesanan yang sudah diverifikasi akan masuk ke list barang dikirim",
             icon: 'warning',
             showCancelButton: true,

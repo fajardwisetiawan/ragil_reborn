@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    <h1 class="m-0 text-dark"><b><?= $title ?></b> | <?= $app_name ?></h1>
+                    <h1 class="m-0 text-dark"><b><?= $title ?></b></h1>
                 </div>
             </div>
         </div>
@@ -38,29 +38,40 @@
                             <tr>
                                 <th class="text-center" style="width: 3%">No.</th>
                                 <th>Produk</th>
-                                <th>Harga</th>
                                 <th>Ukuran</th>
-                                <th>Jumlah</th>
                                 <th>Catatan</th>
-                                <th>Created At</th>
+                                <th>Jenis Pemesanan</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                                <th>Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php 
+                            <?php
                                 $no = 1;
-                                foreach ($transaksi as $t) { 
+                                $total = 0;
+                                foreach ($pemesanan as $p) {
+                                $a = $p->harga * $p->jumlah;
+                                $total += $a;
                             ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
-                                    <td><?= $t->nama_produk ?></td>
-                                    <td>Rp. <?= number_format($t->harga,2) ?></td>
-                                    <td><?= $t->ukuran ? $t->ukuran : "---" ?></td>
-                                    <td><?= $t->jumlah ?></td>
-                                    <td><?= $t->catatan ?></td>
-                                    <td><?= $t->created_at ?></td>
+                                    <td><?= $p->nama_produk ?></td>
+                                    <td><?= $p->ukuran ? $p->ukuran : "---" ?></td>
+                                    <td><?= $p->catatan ?></td>
+                                    <td><?= $p->jenis_pemesanan ?></td>
+                                    <td><?= $p->jumlah ?></td>
+                                    <td><?= number_format($p->harga,2) ?></td>
+                                    <td><?= number_format($p->harga * $p->jumlah,2) ?></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="7" class="text-center">Total</th>
+                                <th><?= number_format($total,2) ?></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -70,6 +81,6 @@
 
 <script>
     $(document).ready(function() {
-        $('#table_data').DataTable();
+        $('#table_data').DataTable({lengthChange: false, searching: true, paging: true, info: false});
     });
 </script>

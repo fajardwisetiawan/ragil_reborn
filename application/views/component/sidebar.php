@@ -97,6 +97,14 @@
 
                 <li class="nav-header">TRANSAKSI</li>
                 <li class="nav-item">
+                    <a href="<?= base_url('transaksi/tagihan') ?>" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Tagihan
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="<?= base_url('transaksi/belum_bayar') ?>" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
