@@ -37,6 +37,22 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-12">
+                                    <label for="recipient-name" class="control-label">Nama</label>
+                                    <input type="text" class="form-control" name="nama" id="nama" placeholder="Nama" value="<?= $toko ? $toko->nama : "" ?>" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="recipient-name" class="control-label">Tentang</label>
+                                    <textarea class="form-control" name="tentang" id="tentang" cols="3" rows="3"  placeholder="Tentang" required><?= $toko ? $toko->tentang : ""  ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
                                     <label for="recipient-name" class="control-label">Alamat Lengkap</label>
                                     <textarea class="form-control" name="alamat_lengkap" id="alamat_lengkap" cols="3" rows="3"  placeholder="Alamat Lengkap" required><?= $toko ? $toko->alamat_lengkap : ""  ?></textarea>
                                 </div>
@@ -59,6 +75,16 @@
                                 <div class="col-md-6">
                                     <label for="recipient-name" class="control-label">Email</label>
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="<?= $toko ? $toko->email : "" ?>" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="recipient-name" class="control-label">Gambar</label>
+                                    <input type="file" class="form-control" name="gambar" id="gambar" placeholder="Gambar">
+                                    <input type="hidden" class="form-control" name="gambar_lama" id="gambar_lama" placeholder="Gambar Lama" value="<?= $toko ? $toko->gambar : "" ?>">
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <label for="recipient-name" class="control-label">Gambar Saat ini</label>
+                                    <br>
+                                    <?= $toko->gambar != null || $toko->gambar != '' ? "<img src='" . base_url("images/toko/" . $toko->gambar) . "' width='100' height='100'>" : "<img src='" . base_url("images/not_found/not_found.png") . "' width='100' height='90'>" ?>
                                 </div>
                             </div>
                         </div>

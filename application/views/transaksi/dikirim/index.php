@@ -49,11 +49,10 @@
                             <?php 
                                 $no = 1;
                                 foreach ($transaksi as $t) { 
-                                $nama_produk = $t->nama_produk_ready ? $t->nama_produk_ready : $t->nama_produk_preorder;
                             ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
-                                    <td><?= $nama_produk ?></td>
+                                    <td><?= $t->nama_produk ?></td>
                                     <td>Rp. <?= number_format($t->harga,2) ?></td>
                                     <td><?= $t->ukuran ?></td>
                                     <td><?= $t->jumlah ?></td>

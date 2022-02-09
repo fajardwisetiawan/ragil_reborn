@@ -6,12 +6,12 @@ class Produk_preorder_model extends CI_Model
     {
         $data = $this->db
                 ->select([
-                    "m_produk_preorder.*",
+                    "m_produk.*",
                     "m_kategori.kategori"
                 ])
-                ->join("m_kategori", "m_produk_preorder.id_kategori = m_kategori.id", "LEFT")
-                ->where('m_produk_preorder.deleted_at IS NULL', null, false)
-                ->get("m_produk_preorder")
+                ->join("m_kategori", "m_produk.id_kategori = m_kategori.id", "LEFT")
+                ->where('m_produk.deleted_at IS NULL', null, false)
+                ->get_where("m_produk", ["m_produk.jenis_barang" => "PREORDER"])
                 ->result();
         return $data;
     }

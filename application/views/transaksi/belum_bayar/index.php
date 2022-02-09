@@ -50,7 +50,6 @@
                             <?php 
                                 $no = 1;
                                 foreach ($transaksi as $t) { 
-                                $nama_produk = $t->nama_produk_ready ? $t->nama_produk_ready : $t->nama_produk_preorder;
                             ?>
                                 <tr>
                                     <td><?= $no++ ?>.</td>
@@ -58,7 +57,7 @@
                                         <button type="button" title="Verifikasi Pembayaran" onclick="verifikasi_pembayaran('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-success waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-check"></i></span></button>
                                         <button type="button" title="Batal Pembayaran" onclick="batal_pembayaran('<?= $t->id ?>', '<?= $nama_produk ?>', '<?= $t->nama_user ?>')" class="btn btn-sm btn-danger waves-effect waves-light"><span class="btn-label text-white"><i class="fas fa-times"></i></span></button>
                                     </td>
-                                    <td><?= $nama_produk ?></td>
+                                    <td><?= $t->nama_produk ?></td>
                                     <td>Rp. <?= number_format($t->harga,2) ?></td>
                                     <td><?= $t->ukuran ?></td>
                                     <td><?= $t->jumlah ?></td>

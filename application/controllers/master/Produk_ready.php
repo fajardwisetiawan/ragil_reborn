@@ -42,7 +42,7 @@ class Produk_ready extends CI_Controller
 
         $cek = $this->db
             ->where('deleted_at IS NULL', null, false)
-            ->get_where("m_produk_ready", ["nama" => $nama])
+            ->get_where("m_produk", ["nama" => $nama, "jenis_barang"  => "READY"])
             ->row();
         if (!$cek) {
 
@@ -56,11 +56,12 @@ class Produk_ready extends CI_Controller
                         "harga"         => $harga,
                         "id_kategori"   => $kategori,
                         "gambar"        => $upload['file']['file_name'],
+                        "jenis_barang"  => "READY",
                         "created_at"    => date("Y-m-d H:i:s"),
                         "created_by"    => $this->session->userdata('id'),
                     ];
         
-                    $insert = $this->db->insert('m_produk_ready', $dataInsert);
+                    $insert = $this->db->insert('m_produk', $dataInsert);
         
                     if ($insert) {
                         $this->session->set_flashdata("sukses", "Berhasil menambahkan data produk ready!");
@@ -76,11 +77,12 @@ class Produk_ready extends CI_Controller
                     "deskripsi"     => $deskripsi,
                     "harga"         => $harga,
                     "id_kategori"   => $kategori,
+                    "jenis_barang"  => "READY",
                     "created_at"    => date("Y-m-d H:i:s"),
                     "created_by"    => $this->session->userdata('id'),
                 ];
     
-                $insert = $this->db->insert('m_produk_ready', $dataInsert);
+                $insert = $this->db->insert('m_produk', $dataInsert);
     
                 if ($insert) {
                     $this->session->set_flashdata("sukses", "Berhasil menambahkan data produk ready!");
@@ -98,7 +100,7 @@ class Produk_ready extends CI_Controller
     {
         $data = $this->db
             ->where('deleted_at IS NULL', null, false)
-            ->get_where("m_produk_ready", ["id" => $id])
+            ->get_where("m_produk", ["id" => $id])
             ->row();
         echo json_encode($data);
     }
@@ -113,7 +115,7 @@ class Produk_ready extends CI_Controller
 
         $cekById = $this->db
                 ->where('deleted_at IS NULL', null, false)
-                ->get_where("m_produk_ready", ["id" => $id])
+                ->get_where("m_produk", ["id" => $id])
                 ->row();
 
         if ($cekById->nama == $nama) {
@@ -133,7 +135,7 @@ class Produk_ready extends CI_Controller
                         "updated_by"    => $this->session->userdata('id'),
                     ];
         
-                    $update = $this->db->update("m_produk_ready", $dataUpdate, ["id" => $id]);
+                    $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
                     $delete_file = unlink($path);
     
                     if ($update && $delete_file) {
@@ -154,7 +156,7 @@ class Produk_ready extends CI_Controller
                     "updated_by"    => $this->session->userdata('id'),
                 ];
     
-                $update = $this->db->update("m_produk_ready", $dataUpdate, ["id" => $id]);
+                $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
                 if ($update) {
                     $this->session->set_flashdata("sukses", "Berhasil memperbaharui data produk ready!");
                 } else {
@@ -164,7 +166,7 @@ class Produk_ready extends CI_Controller
         } else {
             $cekByNama = $this->db
                 ->where('deleted_at IS NULL', null, false)
-                ->get_where("m_produk_ready", ["nama" => $nama])
+                ->get_where("m_produk", ["nama" => $nama])
                 ->row();
             if (!$cekByNama) {
                 if (!empty($_FILES["gambar_edit"]["name"])) {
@@ -183,7 +185,7 @@ class Produk_ready extends CI_Controller
                             "updated_by"    => $this->session->userdata('id'),
                         ];
             
-                        $update = $this->db->update("m_produk_ready", $dataUpdate, ["id" => $id]);
+                        $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
                         $delete_file = unlink($path);
         
                         if ($update && $delete_file) {
@@ -204,7 +206,7 @@ class Produk_ready extends CI_Controller
                         "updated_by"    => $this->session->userdata('id'),
                     ];
         
-                    $update = $this->db->update("m_produk_ready", $dataUpdate, ["id" => $id]);
+                    $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
                     if ($update) {
                         $this->session->set_flashdata("sukses", "Berhasil memperbaharui data produk ready!");
                     } else {
@@ -222,14 +224,14 @@ class Produk_ready extends CI_Controller
     {
         $id     = $this->input->post("id", TRUE);
         $cek    = $this->db
-                ->get_where("m_produk_ready", ["id" => $id])
+                ->get_where("m_produk", ["id" => $id])
                 ->row();
         if ($cek) {
             $dataDelete = [
                 "deleted_at"    => date("Y-m-d H:i:s"),
                 "deleted_by"    => $this->session->userdata('id'),
             ];
-            $delete = $this->db->update("m_produk_ready", $dataDelete, ["id" => $id]);
+            $delete = $this->db->update("m_produk", $dataDelete, ["id" => $id]);
             if ($delete) {
                 echo json_encode([
                     'response_code'     => 200,

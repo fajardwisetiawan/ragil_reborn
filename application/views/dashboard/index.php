@@ -136,12 +136,7 @@
             <?php
                 if (count($bulan_ini)>0) {
                     foreach ($bulan_ini as $row) {
-                        if ($row->nama_produk_ready) {
-                            echo "'" . $row->nama_produk_ready ."',";
-                        } else {
-                            echo "'" . $row->nama_produk_preorder ."',";
-                        }
-                        
+                        echo "'" . $row->nama_produk ."',";
                     }
                 }
             ?>

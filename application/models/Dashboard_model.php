@@ -119,15 +119,12 @@ class Dashboard_model extends CI_Model
         $date = date('Y-m');
         $data = $this->db
             ->select([
-                "m_produk_ready.nama AS nama_produk_ready",
-                "m_produk_preorder.nama AS nama_produk_preorder",
+                "m_produk.nama AS nama_produk",
                 "SUM(jumlah) as total",
             ])
-            ->join("m_produk_ready", "tr_pemesanan.id_produk = m_produk_ready.id AND tr_pemesanan.jenis_pemesanan = 'READY'", "LEFT")
-            ->join("m_produk_preorder", "tr_pemesanan.id_produk = m_produk_preorder.id AND tr_pemesanan.jenis_pemesanan = 'PREORDER'", "LEFT")
+            ->join("m_produk", "tr_pemesanan.id_produk = m_produk.id AND tr_pemesanan.jenis_pemesanan = 'READY'", "LEFT")
             ->group_by([
-                "m_produk_ready.nama",
-                "m_produk_preorder.nama",
+                "m_produk.nama",
             ])
             ->where("DATE_FORMAT(tr_pemesanan.created_at,'%Y-%m')", $date)
             ->where("tr_pemesanan.deleted_at IS NULL", null, false)

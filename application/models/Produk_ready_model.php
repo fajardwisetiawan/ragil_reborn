@@ -6,12 +6,12 @@ class Produk_ready_model extends CI_Model
     {
         $data = $this->db
                 ->select([
-                    "m_produk_ready.*",
+                    "m_produk.*",
                     "m_kategori.kategori"
                 ])
-                ->join("m_kategori", "m_produk_ready.id_kategori = m_kategori.id", "LEFT")
-                ->where('m_produk_ready.deleted_at IS NULL', null, false)
-                ->get("m_produk_ready")
+                ->join("m_kategori", "m_produk.id_kategori = m_kategori.id", "LEFT")
+                ->where('m_produk.deleted_at IS NULL', null, false)
+                ->get_where("m_produk", ["m_produk.jenis_barang" => "READY"])
                 ->result();
         return $data;
     }

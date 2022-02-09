@@ -10,6 +10,8 @@ class Toko extends CI_Controller
             redirect('auth');
         }
 
+        $this->load->helper(array('form', 'url', 'file'));
+
         $this->load->model("toko_model");
     }
 
@@ -29,6 +31,8 @@ class Toko extends CI_Controller
 
     public function save()
     {
+        $nama           = $this->input->post("nama");
+        $tentang        = $this->input->post("tentang");
         $alamat_lengkap = strtoupper($this->input->post("alamat_lengkap"));
         $nomor_wa       = $this->input->post("nomor_wa");
         $telepon        = $this->input->post("telepon");
@@ -38,37 +42,90 @@ class Toko extends CI_Controller
             ->get("m_toko")
             ->row();
         if (!$cek) {
-            $dataInsert = [
-                "alamat_lengkap"    => $alamat_lengkap,
-                "nomor_wa"          => $nomor_wa,
-                "telepon"           => $telepon,
-                "email"             => $email,
-                "created_at"        => date("Y-m-d H:i:s"),
-                "created_by"        => $this->session->userdata('id'),
-            ];
+            if (!empty($_FILES["gambar"]["name"])) {
+                $upload = $this->toko_model->uploadGambar();
+                $dataInsert = [
+                    "nama"              => $nama,
+                    "tentang"           => $tentang,
+                    "alamat_lengkap"    => $alamat_lengkap,
+                    "nomor_wa"          => $nomor_wa,
+                    "telepon"           => $telepon,
+                    "email"             => $email,
+                    "gambar"            => $upload['file']['file_name'],
+                    "created_at"        => date("Y-m-d H:i:s"),
+                    "created_by"        => $this->session->userdata('id'),
+                ];
 
-            $insert = $this->db->insert('m_toko', $dataInsert);
+                $insert = $this->db->insert('m_toko', $dataInsert);
 
-            if ($insert) {
-                $this->session->set_flashdata("sukses", "Berhasil menambahkan data toko!");
+                if ($insert) {
+                    $this->session->set_flashdata("sukses", "Berhasil menambahkan data toko!");
+                } else {
+                    $this->session->set_flashdata("gagal", "Terjadi kesalahan saat menambahkan toko!");
+                }
             } else {
-                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat menambahkan toko!");
+                $dataInsert = [
+                    "nama"              => $nama,
+                    "tentang"           => $tentang,
+                    "alamat_lengkap"    => $alamat_lengkap,
+                    "nomor_wa"          => $nomor_wa,
+                    "telepon"           => $telepon,
+                    "email"             => $email,
+                    "created_at"        => date("Y-m-d H:i:s"),
+                    "created_by"        => $this->session->userdata('id'),
+                ];
+
+                $insert = $this->db->insert('m_toko', $dataInsert);
+
+                if ($insert) {
+                    $this->session->set_flashdata("sukses", "Berhasil menambahkan data toko!");
+                } else {
+                    $this->session->set_flashdata("gagal", "Terjadi kesalahan saat menambahkan toko!");
+                }
             }
         } else {
-            $dataUpdate = [
-                "alamat_lengkap"    => $alamat_lengkap,
-                "nomor_wa"          => $nomor_wa,
-                "telepon"           => $telepon,
-                "email"             => $email,
-                "updated_at"        => date("Y-m-d H:i:s"),
-                "updated_by"        => $this->session->userdata('id'),
-            ];
+            if (!empty($_FILES["gambar"]["name"])) {
+                $upload         = $this->toko_model->uploadGambar();
+                $gambar_lama    = $this->input->post('gambar_lama', true);
+                $path           = "./images/" . $gambar_lama;
+                $dataUpdate = [
+                    "nama"              => $nama,
+                    "tentang"           => $tentang,
+                    "alamat_lengkap"    => $alamat_lengkap,
+                    "nomor_wa"          => $nomor_wa,
+                    "telepon"           => $telepon,
+                    "email"             => $email,
+                    "gambar"            => $upload['file']['file_name'],
+                    "updated_at"        => date("Y-m-d H:i:s"),
+                    "updated_by"        => $this->session->userdata('id'),
+                ];
 
-            $update = $this->db->update("m_toko", $dataUpdate);
-            if ($update) {
-                $this->session->set_flashdata("sukses", "Berhasil memperbaharui data toko!");
+                $update = $this->db->update("m_toko", $dataUpdate);
+                $delete_file = unlink($path);
+    
+                if ($update && $delete_file) {
+                    $this->session->set_flashdata("sukses", "Berhasil memperbaharui data toko!");
+                } else {
+                    $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data toko");
+                }
             } else {
-                $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data toko");
+                $dataUpdate = [
+                    "nama"              => $nama,
+                    "tentang"           => $tentang,
+                    "alamat_lengkap"    => $alamat_lengkap,
+                    "nomor_wa"          => $nomor_wa,
+                    "telepon"           => $telepon,
+                    "email"             => $email,
+                    "updated_at"        => date("Y-m-d H:i:s"),
+                    "updated_by"        => $this->session->userdata('id'),
+                ];
+
+                $update = $this->db->update("m_toko", $dataUpdate);
+                if ($update) {
+                    $this->session->set_flashdata("sukses", "Berhasil memperbaharui data toko!");
+                } else {
+                    $this->session->set_flashdata("gagal", "Terjadi kesalahan saat mengubah data toko");
+                }
             }
         }
         redirect($_SERVER['HTTP_REFERER']);
