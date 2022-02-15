@@ -9,7 +9,7 @@ class Toko_model extends CI_Model
 
     public function uploadGambar()
     {
-        $id_admin   = $this->session->userdata('id');
+        $id_admin   = $this->session->userdata('id_user');
         $newName    = time() . "_" . $id_admin;
 
         $config['upload_path']      = './images/toko/';

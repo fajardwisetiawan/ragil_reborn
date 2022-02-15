@@ -5,7 +5,7 @@ class Auth extends CI_Controller
 {
     public function index()
     {
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             $this->load->view('auth/index');
         } else {
             redirect("dashboard");
@@ -26,10 +26,10 @@ class Auth extends CI_Controller
         
         if ($getAdmin) {
             $userData = [
-                "id"        => $getAdmin->id,
-                "username"  => $getAdmin->username,
-                "nama"      => $getAdmin->nama,
-                "status"    => "LOGIN",
+                "id_admin"        => $getAdmin->id,
+                "username_admin"  => $getAdmin->username,
+                "nama_admin"      => $getAdmin->nama,
+                "status_admin"    => "LOGIN",
             ];
             $this->session->set_userdata($userData);
             redirect('dashboard');
@@ -41,11 +41,11 @@ class Auth extends CI_Controller
 
     public function logout_proses()
     {
-        unset($_SESSION['id']);
-        unset($_SESSION['username']);
-        unset($_SESSION['nama']);
-        unset($_SESSION['status']);
-        $this->session->sess_destroy();
+        unset($_SESSION['id_admin']);
+        unset($_SESSION['username_admin']);
+        unset($_SESSION['nama_admin']);
+        unset($_SESSION['status_admin']);
+        // $this->session->sess_destroy();
 
         redirect("auth");
     }

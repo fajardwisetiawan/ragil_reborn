@@ -8,7 +8,7 @@ class Penjualan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect('auth');
         }
 
@@ -49,10 +49,8 @@ class Penjualan extends CI_Controller
         $x = 2;
         foreach($penjualan as $row)
         {
-            $nama_produk = $row->nama_produk_ready ? $row->nama_produk_ready : $row->nama_produk_preorder;
-            
             $sheet->setCellValue('A'.$x, $no++);
-            $sheet->setCellValue('B'.$x, $nama_produk);
+            $sheet->setCellValue('B'.$x, $row->nama_produk);
             $sheet->setCellValue('C'.$x, number_format($row->harga,2));
             $sheet->setCellValue('D'.$x, $row->ukuran);
             $sheet->setCellValue('E'.$x, $row->jumlah);

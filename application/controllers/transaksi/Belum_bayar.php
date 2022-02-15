@@ -6,7 +6,7 @@ class Belum_bayar extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect('auth');
         }
 
@@ -40,7 +40,7 @@ class Belum_bayar extends CI_Controller
             $dataVerifikasi = [
                 "status_pemesanan"  => "DIKEMAS",
                 "updated_at"        => date("Y-m-d H:i:s"),
-                "updated_by"        => $this->session->userdata('id'),
+                "updated_by"        => $this->session->userdata('id_user'),
             ];
             $verifikasi_pembayaran = $this->db->update("tr_pemesanan", $dataVerifikasi, ["id" => $id]);
             if ($verifikasi_pembayaran) {
@@ -72,7 +72,7 @@ class Belum_bayar extends CI_Controller
             $dataBatal = [
                 "status_pemesanan"  => "BATAL",
                 "updated_at"        => date("Y-m-d H:i:s"),
-                "updated_by"        => $this->session->userdata('id'),
+                "updated_by"        => $this->session->userdata('id_user'),
             ];
             $batal_pembayaran = $this->db->update("tr_pemesanan", $dataBatal, ["id" => $id]);
             if ($batal_pembayaran) {

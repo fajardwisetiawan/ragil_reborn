@@ -11,8 +11,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <div class="brand-link">
         <img src="<?= base_url("assets/dist/img/logo.png") ?>" alt="User Image" class="centerr" width="100">
-        <p class="text-center" style="font-size: 0.75em; padding: 0; margin: 0;"><?= $this->session->userdata('username') ?></b>
-        <p class="text-center" style="font-size: 0.75em; padding: 0; margin: 0;"><?= $this->session->userdata('nama') ?></b>
+        <p class="text-center" style="font-size: 0.75em; padding: 0; margin: 0;"><?= $this->session->userdata('username_admin') ?></b>
+        <p class="text-center" style="font-size: 0.75em; padding: 0; margin: 0;"><?= $this->session->userdata('nama_admin') ?></b>
     </div>
 
     <div class="sidebar">

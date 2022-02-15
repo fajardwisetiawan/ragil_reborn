@@ -6,7 +6,7 @@ class Bank extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect('auth');
         }
 
@@ -41,7 +41,7 @@ class Bank extends CI_Controller
                 "nama"          => $nama,
                 "no_rekening"   => $no_rekening,
                 "created_at"    => date("Y-m-d H:i:s"),
-                "created_by"    => $this->session->userdata('id'),
+                "created_by"    => $this->session->userdata('id_user'),
             ];
 
             $insert = $this->db->insert('m_bank', $dataInsert);
@@ -82,7 +82,7 @@ class Bank extends CI_Controller
                 "nama"          => $nama,
                 "no_rekening"   => $no_rekening,
                 "updated_at"    => date("Y-m-d H:i:s"),
-                "updated_by"    => $this->session->userdata('id'),
+                "updated_by"    => $this->session->userdata('id_user'),
             ];
 
             $update = $this->db->update("m_bank", $dataUpdate, ["id" => $id]);
@@ -101,7 +101,7 @@ class Bank extends CI_Controller
                     "nama"          => $nama,
                     "no_rekening"   => $no_rekening,
                     "updated_at"    => date("Y-m-d H:i:s"),
-                    "updated_by"    => $this->session->userdata('id'),
+                    "updated_by"    => $this->session->userdata('id_user'),
                 ];
     
                 $update = $this->db->update("m_bank", $dataUpdate, ["id" => $id]);
@@ -126,7 +126,7 @@ class Bank extends CI_Controller
         if ($cek) {
             $dataDelete = [
                 "deleted_at"    => date("Y-m-d H:i:s"),
-                "deleted_by"    => $this->session->userdata('id'),
+                "deleted_by"    => $this->session->userdata('id_user'),
             ];
             $delete = $this->db->update("m_bank", $dataDelete, ["id" => $id]);
             if ($delete) {

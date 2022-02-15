@@ -72,7 +72,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
                     <a class="nav-link text-white" data-toggle="dropdown" href="#">
-                        <?= $this->session->userdata('nama') ?>
+                        <?= $this->session->userdata('nama_admin') ?>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>

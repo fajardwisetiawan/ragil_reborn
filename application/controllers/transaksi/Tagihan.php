@@ -6,7 +6,7 @@ class Tagihan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect("auth");
         }
 
@@ -61,21 +61,21 @@ class Tagihan extends CI_Controller
                     $dataKeranjang = [
                         "status"        => "SUDAH",
                         "updated_at"    => date("Y-m-d H:i:s"),
-                        "updated_by"    => $this->session->userdata('id'),
+                        "updated_by"    => $this->session->userdata('id_user'),
                     ];
                     $updatedKeranjang = $this->db->update("tr_keranjang", $dataKeranjang, ["id_user" => $id_user, "status" => "PROSES"]);
                     if ($updatedKeranjang) {
                         $dataBatalTagihan = [
                             "status"        => "BATAL",
                             "updated_at"    => date("Y-m-d H:i:s"),
-                            "updated_by"    => $this->session->userdata('id'),
+                            "updated_by"    => $this->session->userdata('id_user'),
                         ];
                         $batalTagihan = $this->db->update("tr_tagihan", $dataBatalTagihan, ["id" => $id]);
                         if ($batalTagihan) {
                             $dataBatalPemesanan = [
                                 "status_pemesanan"  => "BATAL",
                                 "updated_at"        => date("Y-m-d H:i:s"),
-                                "updated_by"        => $this->session->userdata('id'),
+                                "updated_by"        => $this->session->userdata('id_user'),
                             ];
                             $batalPemesanan = $this->db->update("tr_pemesanan", $dataBatalPemesanan, ["id_tagihan" => $id]);
                             if ($batalPemesanan) {
@@ -141,21 +141,21 @@ class Tagihan extends CI_Controller
                     $dataKeranjang = [
                         "status"        => "SUDAH",
                         "updated_at"    => date("Y-m-d H:i:s"),
-                        "updated_by"    => $this->session->userdata('id'),
+                        "updated_by"    => $this->session->userdata('id_user'),
                     ];
                     $updatedKeranjang = $this->db->update("tr_keranjang", $dataKeranjang, ["id_user" => $id_user, "status" => "PROSES"]);
                     if ($updatedKeranjang) {
                         $dataBatalTagihan = [
                             "status"        => "LUNAS",
                             "updated_at"    => date("Y-m-d H:i:s"),
-                            "updated_by"    => $this->session->userdata('id'),
+                            "updated_by"    => $this->session->userdata('id_user'),
                         ];
                         $batalTagihan = $this->db->update("tr_tagihan", $dataBatalTagihan, ["id" => $id]);
                         if ($batalTagihan) {
                             $dataBatalPemesanan = [
                                 "status_pemesanan"  => "DIKEMAS",
                                 "updated_at"        => date("Y-m-d H:i:s"),
-                                "updated_by"        => $this->session->userdata('id'),
+                                "updated_by"        => $this->session->userdata('id_user'),
                             ];
                             $batalPemesanan = $this->db->update("tr_pemesanan", $dataBatalPemesanan, ["id_tagihan" => $id]);
                             if ($batalPemesanan) {

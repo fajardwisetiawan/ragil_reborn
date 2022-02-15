@@ -6,7 +6,7 @@ class Produk_preorder extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect('auth');
         }
 
@@ -58,7 +58,7 @@ class Produk_preorder extends CI_Controller
                         "gambar"        => $upload['file']['file_name'],
                         "jenis_barang"  => "PREORDER",
                         "created_at"    => date("Y-m-d H:i:s"),
-                        "created_by"    => $this->session->userdata('id'),
+                        "created_by"    => $this->session->userdata('id_user'),
                     ];
         
                     $insert = $this->db->insert('m_produk', $dataInsert);
@@ -79,7 +79,7 @@ class Produk_preorder extends CI_Controller
                     "id_kategori"   => $kategori,
                     "created_at"    => date("Y-m-d H:i:s"),
                     "jenis_barang"  => "PREORDER",
-                    "created_by"    => $this->session->userdata('id'),
+                    "created_by"    => $this->session->userdata('id_user'),
                 ];
     
                 $insert = $this->db->insert('m_produk', $dataInsert);
@@ -132,7 +132,7 @@ class Produk_preorder extends CI_Controller
                         "id_kategori"   => $kategori,
                         "gambar"        => $upload['file']['file_name'],
                         "updated_at"    => date("Y-m-d H:i:s"),
-                        "updated_by"    => $this->session->userdata('id'),
+                        "updated_by"    => $this->session->userdata('id_user'),
                     ];
         
                     $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
@@ -153,7 +153,7 @@ class Produk_preorder extends CI_Controller
                     "harga"         => $harga,
                     "id_kategori"   => $kategori,
                     "updated_at"    => date("Y-m-d H:i:s"),
-                    "updated_by"    => $this->session->userdata('id'),
+                    "updated_by"    => $this->session->userdata('id_user'),
                 ];
     
                 $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
@@ -182,7 +182,7 @@ class Produk_preorder extends CI_Controller
                             "id_kategori"   => $kategori,
                             "gambar"        => $upload['file']['file_name'],
                             "updated_at"    => date("Y-m-d H:i:s"),
-                            "updated_by"    => $this->session->userdata('id'),
+                            "updated_by"    => $this->session->userdata('id_user'),
                         ];
             
                         $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
@@ -203,7 +203,7 @@ class Produk_preorder extends CI_Controller
                         "harga"         => $harga,
                         "id_kategori"   => $kategori,
                         "updated_at"    => date("Y-m-d H:i:s"),
-                        "updated_by"    => $this->session->userdata('id'),
+                        "updated_by"    => $this->session->userdata('id_user'),
                     ];
         
                     $update = $this->db->update("m_produk", $dataUpdate, ["id" => $id]);
@@ -229,7 +229,7 @@ class Produk_preorder extends CI_Controller
         if ($cek) {
             $dataDelete = [
                 "deleted_at"    => date("Y-m-d H:i:s"),
-                "deleted_by"    => $this->session->userdata('id'),
+                "deleted_by"    => $this->session->userdata('id_user'),
             ];
             $delete = $this->db->update("m_produk", $dataDelete, ["id" => $id]);
             if ($delete) {

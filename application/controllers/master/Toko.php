@@ -6,7 +6,7 @@ class Toko extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        if ($this->session->userdata('status') == '' || $this->session->userdata('status') == null) {
+        if ($this->session->userdata('status_admin') == '' || $this->session->userdata('status_admin') == null) {
             redirect('auth');
         }
 
@@ -53,7 +53,7 @@ class Toko extends CI_Controller
                     "email"             => $email,
                     "gambar"            => $upload['file']['file_name'],
                     "created_at"        => date("Y-m-d H:i:s"),
-                    "created_by"        => $this->session->userdata('id'),
+                    "created_by"        => $this->session->userdata('id_user'),
                 ];
 
                 $insert = $this->db->insert('m_toko', $dataInsert);
@@ -72,7 +72,7 @@ class Toko extends CI_Controller
                     "telepon"           => $telepon,
                     "email"             => $email,
                     "created_at"        => date("Y-m-d H:i:s"),
-                    "created_by"        => $this->session->userdata('id'),
+                    "created_by"        => $this->session->userdata('id_user'),
                 ];
 
                 $insert = $this->db->insert('m_toko', $dataInsert);
@@ -97,7 +97,7 @@ class Toko extends CI_Controller
                     "email"             => $email,
                     "gambar"            => $upload['file']['file_name'],
                     "updated_at"        => date("Y-m-d H:i:s"),
-                    "updated_by"        => $this->session->userdata('id'),
+                    "updated_by"        => $this->session->userdata('id_user'),
                 ];
 
                 $update = $this->db->update("m_toko", $dataUpdate);
@@ -117,7 +117,7 @@ class Toko extends CI_Controller
                     "telepon"           => $telepon,
                     "email"             => $email,
                     "updated_at"        => date("Y-m-d H:i:s"),
-                    "updated_by"        => $this->session->userdata('id'),
+                    "updated_by"        => $this->session->userdata('id_user'),
                 ];
 
                 $update = $this->db->update("m_toko", $dataUpdate);
